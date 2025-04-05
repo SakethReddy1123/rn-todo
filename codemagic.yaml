@@ -1,10 +1,10 @@
 workflows:
   expo-android-build:
     name: Expo Android APK & AAB
-    instance_type: mac_mini
+    instance_type: linux  # ✅ Use free-tier compatible instance
     environment:
       vars:
-        EXPO_TOKEN: Encrypted_Expo_Token # You'll set this in UI, don't paste raw token here
+        EXPO_TOKEN: Encrypted_Expo_Token
       node: 18
     triggering:
       events:
