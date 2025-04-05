@@ -1,0 +1,14 @@
+{
+  "build": {
+    "preview-aab": {
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "preview-apk": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  }
+}

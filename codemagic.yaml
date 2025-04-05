@@ -1,0 +1,33 @@
+workflows:
+  expo-android-build:
+    name: Expo Android APK & AAB
+    instance_type: mac_mini
+    environment:
+      vars:
+        EXPO_TOKEN: Encrypted_Expo_Token # You'll set this in UI, don't paste raw token here
+      node: 18
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm ci
+      - name: Install Expo and EAS CLI
+        script: |
+          npm install -g expo-cli eas-cli
+      - name: Authenticate Expo
+        script: |
+          eas login --token $EXPO_TOKEN
+      - name: Build APK
+        script: |
+          eas build --platform android --profile preview-apk --non-interactive
+      - name: Build AAB
+        script: |
+          eas build --platform android --profile preview-aab --non-interactive
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
