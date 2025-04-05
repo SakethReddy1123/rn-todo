@@ -1,15 +1,16 @@
 workflows:
   build-android:
-    name: Android Build (Free Tier)
-    instance_type: mac_mini
+    name: Build Android APK & AAB (Free Tier)
+    instance_type: mac_mini  # ✅ This is supported in the free tier
     max_build_duration: 60
     environment:
       vars:
         NODE_VERSION: 18
+      node: $NODE_VERSION
     scripts:
-      - npm install
-      - npx expo install
+      - npm ci
+      - npm install -g expo-cli eas-cli
       - npx eas build --platform android --profile preview --non-interactive
     artifacts:
-      - build/**/outputs/**/*.apk
-      - build/**/outputs/**/*.aab
+      - build/**/*.apk
+      - build/**/*.aab
