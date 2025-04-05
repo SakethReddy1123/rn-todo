@@ -1,33 +1,25 @@
 workflows:
-  expo-android-build:
-    name: Expo Android APK & AAB
-    instance_type: linux  # ✅ Use free-tier compatible instance
+  build-android:
+    name: Android APK & AAB Build (Free Plan)
+    instance_type: linux
     environment:
-      vars:
-        EXPO_TOKEN: Encrypted_Expo_Token
       node: 18
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: main
-          include: true
+      vars:
+        EXPO_TOKEN: Encrypted_Expo_Token  # Replace or set via Codemagic UI
     scripts:
       - name: Install dependencies
         script: |
           npm ci
-      - name: Install Expo and EAS CLI
-        script: |
           npm install -g expo-cli eas-cli
-      - name: Authenticate Expo
+      - name: Expo Login
         script: |
-          eas login --token $EXPO_TOKEN
+          eas whoami || eas login --token $EXPO_TOKEN
       - name: Build APK
         script: |
-          eas build --platform android --profile preview-apk --non-interactive
+          eas build --platform android --profile preview --non-interactive --output=apk
       - name: Build AAB
         script: |
-          eas build --platform android --profile preview-aab --non-interactive
+          eas build --platform android --profile preview --non-interactive --output=aab
     artifacts:
-      - build/**/outputs/**/*.apk
-      - build/**/outputs/**/*.aab
+      - '**/*.apk'
+      - '**/*.aab'
